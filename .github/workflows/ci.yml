@@ -1,0 +1,41 @@
+name: OmniRemote CI
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup .NET 10
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.0.x'
+
+    - name: TruffleHog Secret Scan
+      uses: trufflesecurity/trufflehog@main
+      with:
+        path: ./
+        base: ${{ github.event.repository.default_branch }}
+        head: HEAD
+
+    - name: Restore Dependencies
+      run: dotnet restore OmniRemote.slnx
+
+    - name: Build Solution
+      run: dotnet build OmniRemote.slnx --no-restore --configuration Release
+
+    - name: Run Unit Tests
+      run: dotnet test tests/OmniRemote.UnitTests/OmniRemote.UnitTests.csproj --no-build --configuration Release --verbosity normal
+
+    - name: Run Security Integration Tests
+      run: dotnet test tests/OmniRemote.IntegrationTests/OmniRemote.IntegrationTests.csproj --no-build --configuration Release --verbosity normal
