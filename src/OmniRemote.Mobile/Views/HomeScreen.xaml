@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<?xaml-comp compile="true" ?>
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:OmniRemote.Mobile.ViewModels"
+    xmlns:devices="clr-namespace:OmniRemote.Domain.Devices;assembly=OmniRemote.Domain"
+    x:Class="OmniRemote.Mobile.Views.HomeScreen"
+    x:DataType="vm:HomeViewModel"
+    Shell.NavBarIsVisible="False"
+    BackgroundColor="{StaticResource PureBlack}">
+
+    <Grid RowDefinitions="Auto, *" Margin="20, 48, 20, 20">
+        <!-- Top App Bar -->
+        <Grid Grid.Row="0" ColumnDefinitions="*, Auto" Margin="0, 0, 0, 24">
+            <Label 
+                Text="Smart Remote" 
+                Style="{StaticResource LargeHeading}"
+                VerticalOptions="Center" />
+
+            <Border 
+                Grid.Column="1"
+                HeightRequest="42"
+                WidthRequest="42"
+                StrokeShape="RoundRectangle 21"
+                BackgroundColor="{StaticResource CardGrey}"
+                Stroke="{StaticResource BorderGrey}">
+                <Label 
+                    Text="👤" 
+                    FontSize="20"
+                    HorizontalOptions="Center" 
+                    VerticalOptions="Center" />
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding OpenSettingsCommand}" />
+                </Border.GestureRecognizers>
+            </Border>
+        </Grid>
+
+        <!-- Main Content Area -->
+        <Grid Grid.Row="1">
+            <!-- Empty State (Screen 2 from Reference Screenshot) -->
+            <VerticalStackLayout 
+                IsVisible="{Binding IsEmpty}"
+                HorizontalOptions="Center" 
+                VerticalOptions="Center" 
+                Spacing="16">
+                <!-- Center Remote Illustration -->
+                <Border 
+                    HeightRequest="68"
+                    WidthRequest="68"
+                    StrokeShape="RoundRectangle 18"
+                    BackgroundColor="Transparent"
+                    Stroke="{StaticResource TextMuted}"
+                    StrokeThickness="2"
+                    HorizontalOptions="Center">
+                    <Grid>
+                        <BoxView 
+                            HeightRequest="8" 
+                            WidthRequest="8" 
+                            Color="{StaticResource TextMuted}" 
+                            CornerRadius="4" 
+                            HorizontalOptions="Center" 
+                            VerticalOptions="Center" />
+                    </Grid>
+                </Border>
+
+                <Label 
+                    Text="No remote controls" 
+                    TextColor="{StaticResource TextSecondary}"
+                    FontSize="16"
+                    HorizontalOptions="Center" />
+            </VerticalStackLayout>
+
+            <!-- Populated State: Saved Remotes Collection -->
+            <CollectionView 
+                IsVisible="{Binding HasRemotes}"
+                ItemsSource="{Binding Remotes}"
+                SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="devices:RemoteDevice">
+                        <Border 
+                            Style="{StaticResource CardBorder}" 
+                            Margin="0, 0, 0, 12">
+                            <Grid ColumnDefinitions="Auto, *, Auto">
+                                <!-- Device Icon Glyph -->
+                                <Border 
+                                    HeightRequest="48"
+                                    WidthRequest="48"
+                                    StrokeShape="RoundRectangle 14"
+                                    BackgroundColor="{StaticResource TileGrey}"
+                                    Stroke="{StaticResource BorderGrey}"
+                                    Margin="0, 0, 14, 0">
+                                    <Label 
+                                        Text="📱" 
+                                        FontSize="22" 
+                                        HorizontalOptions="Center" 
+                                        VerticalOptions="Center" />
+                                </Border>
+
+                                <!-- Name & Subtitle -->
+                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="3">
+                                    <Label 
+                                        Text="{Binding Name}" 
+                                        FontSize="17" 
+                                        FontAttributes="Bold" 
+                                        TextColor="{StaticResource TextPrimary}" />
+                                    <Label 
+                                        Text="{Binding Subtitle}" 
+                                        Style="{StaticResource SubHeading}" />
+                                </VerticalStackLayout>
+
+                                <!-- Mode Badge -->
+                                <Border 
+                                    Grid.Column="2"
+                                    HeightRequest="26"
+                                    Padding="8, 2"
+                                    StrokeShape="RoundRectangle 8"
+                                    BackgroundColor="{StaticResource PureBlack}"
+                                    Stroke="{StaticResource BorderGrey}"
+                                    VerticalOptions="Center">
+                                    <Label 
+                                        Text="SIMULATION" 
+                                        FontSize="10" 
+                                        TextColor="{StaticResource AccentBlue}" 
+                                        FontAttributes="Bold"
+                                        VerticalOptions="Center" />
+                                </Border>
+                            </Grid>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer 
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Path=SelectRemoteCommand}" 
+                                    CommandParameter="{Binding .}" />
+                            </Border.GestureRecognizers>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Floating Plus Button (FAB at bottom right) -->
+            <Border 
+                HeightRequest="60"
+                WidthRequest="60"
+                StrokeShape="RoundRectangle 30"
+                BackgroundColor="{StaticResource AccentBlue}"
+                Stroke="Transparent"
+                HorizontalOptions="End"
+                VerticalOptions="End"
+                Margin="0, 0, 8, 16">
+                <Label 
+                    Text="+" 
+                    TextColor="{StaticResource TextPrimary}"
+                    FontSize="34"
+                    FontAttributes="Bold"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    Margin="0, -3, 0, 0" />
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding AddRemoteCommand}" />
+                </Border.GestureRecognizers>
+            </Border>
+        </Grid>
+    </Grid>
+
+</ContentPage>

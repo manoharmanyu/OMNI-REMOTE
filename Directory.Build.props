@@ -1,0 +1,17 @@
+<Project>
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
+    <!-- Treat NuGet vulnerability audit findings as build warnings (surfaced in CI). -->
+    <NuGetAudit>true</NuGetAudit>
+    <NuGetAuditMode>all</NuGetAuditMode>
+    <NuGetAuditLevel>low</NuGetAuditLevel>
+    <WarningsNotAsErrors>$(WarningsNotAsErrors);NU1901;NU1902;NU1903;NU1904</WarningsNotAsErrors>
+    <!-- CA1848/CA1873 (LoggerMessage perf), CA2007 (ConfigureAwait), CA1707 (test method names with underscores) -->
+    <NoWarn>$(NoWarn);CA1848;CA1873;CA2007;CA1716;CA1711;CA1724;CA1305;CA1307;CA1309;CA1310;CA1311;CA1304;CA1862;CA1707;CA1001</NoWarn>
+  </PropertyGroup>
+</Project>

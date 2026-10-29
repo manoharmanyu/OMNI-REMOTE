@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<?xaml-comp compile="true" ?>
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:OmniRemote.Mobile.ViewModels"
+    x:Class="OmniRemote.Mobile.Views.RemoteControlScreen"
+    x:DataType="vm:RemoteControlViewModel"
+    Shell.NavBarIsVisible="False"
+    BackgroundColor="{StaticResource PureBlack}">
+
+    <Grid RowDefinitions="Auto, *, Auto" Margin="20, 44, 20, 20">
+        <!-- Top App Bar (Screen 6 from Reference Screenshot) -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto, *, Auto" Margin="0, 0, 0, 16">
+            <Border 
+                HeightRequest="40" 
+                WidthRequest="40" 
+                StrokeShape="RoundRectangle 20"
+                BackgroundColor="Transparent"
+                Stroke="Transparent">
+                <Label 
+                    Text="❮" 
+                    FontSize="20" 
+                    TextColor="{StaticResource TextPrimary}"
+                    HorizontalOptions="Center" 
+                    VerticalOptions="Center" />
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackCommand}" />
+                </Border.GestureRecognizers>
+            </Border>
+
+            <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Margin="10, 0, 0, 0">
+                <Label 
+                    Text="{Binding DeviceName}" 
+                    FontSize="20" 
+                    FontAttributes="Bold" 
+                    TextColor="{StaticResource TextPrimary}" />
+                <Label 
+                    Text="{Binding Subtitle}" 
+                    Style="{StaticResource SubHeading}" />
+            </VerticalStackLayout>
+
+            <!-- Power Button at Top Right -->
+            <Border 
+                Grid.Column="2"
+                HeightRequest="44"
+                WidthRequest="44"
+                StrokeShape="RoundRectangle 22"
+                BackgroundColor="{StaticResource CardGrey}"
+                Stroke="{StaticResource BorderGrey}">
+                <Label 
+                    Text="⏻" 
+                    FontSize="22" 
+                    TextColor="{StaticResource TextPrimary}"
+                    HorizontalOptions="Center" 
+                    VerticalOptions="Center" />
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding TogglePowerCommand}" />
+                </Border.GestureRecognizers>
+            </Border>
+        </Grid>
+
+        <!-- Main Interactive Remote Canvas -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Spacing="24">
+                <!-- Simulation / Connection Mode Banner -->
+                <Border 
+                    HeightRequest="28"
+                    Padding="10, 2"
+                    StrokeShape="RoundRectangle 14"
+                    BackgroundColor="{StaticResource CardGrey}"
+                    Stroke="{StaticResource BorderGrey}"
+                    HorizontalOptions="Center">
+                    <Label 
+                        Text="{Binding StatusPill}" 
+                        FontSize="11" 
+                        FontAttributes="Bold" 
+                        TextColor="{StaticResource AccentBlue}"
+                        VerticalOptions="Center" />
+                </Border>
+
+                <!-- ================= AIR CONDITIONER CONTROLS ================= -->
+                <!-- Center Temperature Dial (Screen 6 Reference Layout) -->
+                <Grid ColumnDefinitions="*, Auto, *" HorizontalOptions="Center" VerticalOptions="Center" Margin="0, 10">
+                    <!-- Minus Button -->
+                    <Border 
+                        HeightRequest="48"
+                        WidthRequest="48"
+                        StrokeShape="RoundRectangle 24"
+                        BackgroundColor="{StaticResource CardGrey}"
+                        Stroke="{StaticResource BorderGrey}"
+                        VerticalOptions="Center"
+                        HorizontalOptions="End"
+                        Margin="0, 0, 20, 0">
+                        <Label 
+                            Text="−" 
+                            FontSize="26" 
+                            TextColor="{StaticResource TextPrimary}" 
+                            HorizontalOptions="Center" 
+                            VerticalOptions="Center"
+                            Margin="0, -2, 0, 0" />
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer 
+                                Command="{Binding AdjustTempCommand}" 
+                                CommandParameter="-1" />
+                        </Border.GestureRecognizers>
+                    </Border>
+
+                    <!-- Circular 24°C Temperature Display -->
+                    <Border 
+                        Grid.Column="1"
+                        HeightRequest="150"
+                        WidthRequest="150"
+                        StrokeShape="RoundRectangle 75"
+                        BackgroundColor="{StaticResource CardGrey}"
+                        Stroke="{StaticResource BorderGrey}"
+                        StrokeThickness="4">
+                        <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                            <Label 
+                                Text="{Binding TemperatureC, StringFormat='{}{0}°C'}" 
+                                FontSize="34" 
+                                FontAttributes="Bold"
+                                TextColor="{StaticResource TextPrimary}"
+                                HorizontalOptions="Center" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- Plus Button -->
+                    <Border 
+                        Grid.Column="2"
+                        HeightRequest="48"
+                        WidthRequest="48"
+                        StrokeShape="RoundRectangle 24"
+                        BackgroundColor="{StaticResource CardGrey}"
+                        Stroke="{StaticResource BorderGrey}"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Start"
+                        Margin="20, 0, 0, 0">
+                        <Label 
+                            Text="+" 
+                            FontSize="26" 
+                            TextColor="{StaticResource TextPrimary}" 
+                            HorizontalOptions="Center" 
+                            VerticalOptions="Center"
+                            Margin="0, -2, 0, 0" />
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer 
+                                Command="{Binding AdjustTempCommand}" 
+                                CommandParameter="1" />
+                        </Border.GestureRecognizers>
+                    </Border>
+                </Grid>
+
+                <!-- 2-Row / 3-Column AC Modes & Functions Grid (Screen 6 from Reference Screenshot) -->
+                <Grid RowDefinitions="Auto, Auto" ColumnDefinitions="*, *, *" RowSpacing="12" ColumnSpacing="12">
+                    <!-- Row 1: Cool, Heat, Fan -->
+                    <Border Grid.Row="0" Grid.Column="0" HeightRequest="76" Style="{StaticResource CardBorder}" Padding="8">
+                        <VerticalStackLayout VerticalOptions="Center" Spacing="4">
+                            <Label Text="❄" FontSize="20" HorizontalOptions="Center" />
+                            <Label Text="Cool" FontSize="12" TextColor="{StaticResource TextPrimary}" HorizontalOptions="Center" />
+                        </VerticalStackLayout>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SetModeCommand}" CommandParameter="cool" />
+                        </Border.GestureRecognizers>
+                    </Border>
+
+                    <Border Grid.Row="0" Grid.Column="1" HeightRequest="76" Style="{StaticResource CardBorder}" Padding="8">
+                        <VerticalStackLayout VerticalOptions="Center" Spacing="4">
+                            <Label Text="☼" FontSize="20" HorizontalOptions="Center" />
+                            <Label Text="Heat" FontSize="12" TextColor="{StaticResource TextPrimary}" HorizontalOptions="Center" />
+                        </VerticalStackLayout>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SetModeCommand}" CommandParameter="heat" />
+                        </Border.GestureRecognizers>
+                    </Border>
+
+                    <Border Grid.Row="0" Grid.Column="2" HeightRequest="76" Style="{StaticResource CardBorder}" Padding="8">
+                        <VerticalStackLayout VerticalOptions="Center" Spacing="4">
+                            <Label Text="🌀" FontSize="20" HorizontalOptions="Center" />
+                            <Label Text="Fan" FontSize="12" TextColor="{StaticResource TextPrimary}" HorizontalOptions="Center" />
+                        </VerticalStackLayout>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SetModeCommand}" CommandParameter="fan" />
+                        </Border.GestureRecognizers>
+                    </Border>
+
+                    <!-- Row 2: Dry, Auto, Swing -->
+                    <Border Grid.Row="1" Grid.Column="0" HeightRequest="76" Style="{StaticResource CardBorder}" Padding="8">
+                        <VerticalStackLayout VerticalOptions="Center" Spacing="4">
+                            <Label Text="💧" FontSize="20" HorizontalOptions="Center" />
+                            <Label Text="Dry" FontSize="12" TextColor="{StaticResource TextPrimary}" HorizontalOptions="Center" />
+                        </VerticalStackLayout>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SetModeCommand}" CommandParameter="dry" />
+                        </Border.GestureRecognizers>
+                    </Border>
+
+                    <Border Grid.Row="1" Grid.Column="1" HeightRequest="76" Style="{StaticResource CardBorder}" Padding="8">
+                        <VerticalStackLayout VerticalOptions="Center" Spacing="4">
+                            <Label Text="Ⓐ" FontSize="20" HorizontalOptions="Center" />
+                            <Label Text="Auto" FontSize="12" TextColor="{StaticResource TextPrimary}" HorizontalOptions="Center" />
+                        </VerticalStackLayout>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SetModeCommand}" CommandParameter="auto" />
+                        </Border.GestureRecognizers>
+                    </Border>
+
+                    <Border Grid.Row="1" Grid.Column="2" HeightRequest="76" Style="{StaticResource CardBorder}" Padding="8">
+                        <VerticalStackLayout VerticalOptions="Center" Spacing="4">
+                            <Label Text="⇋" FontSize="20" HorizontalOptions="Center" />
+                            <Label Text="Swing" FontSize="12" TextColor="{StaticResource TextPrimary}" HorizontalOptions="Center" />
+                        </VerticalStackLayout>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ToggleSwingCommand}" />
+                        </Border.GestureRecognizers>
+                    </Border>
+                </Grid>
+
+                <!-- ================= TV & MEDIA CONTROLS (D-Pad & Volume) ================= -->
+                <Border Style="{StaticResource CardBorder}" Padding="16">
+                    <VerticalStackLayout Spacing="16">
+                        <Label Text="TV &amp; Navigation Pad" Style="{StaticResource SectionHeading}" />
+
+                        <!-- D-Pad Navigation -->
+                        <Grid RowDefinitions="Auto, Auto, Auto" ColumnDefinitions="Auto, Auto, Auto" HorizontalOptions="Center" RowSpacing="8" ColumnSpacing="8">
+                            <Border Grid.Row="0" Grid.Column="1" HeightRequest="48" WidthRequest="48" StrokeShape="RoundRectangle 24" BackgroundColor="{StaticResource TileGrey}">
+                                <Label Text="▲" FontSize="16" HorizontalOptions="Center" VerticalOptions="Center" />
+                                <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding SendNavCommand}" CommandParameter="up" /></Border.GestureRecognizers>
+                            </Border>
+
+                            <Border Grid.Row="1" Grid.Column="0" HeightRequest="48" WidthRequest="48" StrokeShape="RoundRectangle 24" BackgroundColor="{StaticResource TileGrey}">
+                                <Label Text="◀" FontSize="16" HorizontalOptions="Center" VerticalOptions="Center" />
+                                <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding SendNavCommand}" CommandParameter="left" /></Border.GestureRecognizers>
+                            </Border>
+
+                            <Border Grid.Row="1" Grid.Column="1" HeightRequest="56" WidthRequest="56" StrokeShape="RoundRectangle 28" BackgroundColor="{StaticResource AccentBlue}">
+                                <Label Text="OK" FontSize="16" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" />
+                                <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding SendNavCommand}" CommandParameter="ok" /></Border.GestureRecognizers>
+                            </Border>
+
+                            <Border Grid.Row="1" Grid.Column="2" HeightRequest="48" WidthRequest="48" StrokeShape="RoundRectangle 24" BackgroundColor="{StaticResource TileGrey}">
+                                <Label Text="▶" FontSize="16" HorizontalOptions="Center" VerticalOptions="Center" />
+                                <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding SendNavCommand}" CommandParameter="right" /></Border.GestureRecognizers>
+                            </Border>
+
+                            <Border Grid.Row="2" Grid.Column="1" HeightRequest="48" WidthRequest="48" StrokeShape="RoundRectangle 24" BackgroundColor="{StaticResource TileGrey}">
+                                <Label Text="▼" FontSize="16" HorizontalOptions="Center" VerticalOptions="Center" />
+                                <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding SendNavCommand}" CommandParameter="down" /></Border.GestureRecognizers>
+                            </Border>
+                        </Grid>
+
+                        <!-- Volume & Channel Controls -->
+                        <Grid ColumnDefinitions="*, *" ColumnSpacing="16">
+                            <Border Grid.Column="0" Style="{StaticResource CardBorder}" Padding="8">
+                                <VerticalStackLayout Spacing="8">
+                                    <Label Text="Volume" FontSize="12" HorizontalOptions="Center" TextColor="{StaticResource TextSecondary}" />
+                                    <HorizontalStackLayout Spacing="12" HorizontalOptions="Center">
+                                        <Button Text="-" Style="{StaticResource SecondaryButton}" WidthRequest="40" Command="{Binding AdjustVolumeCommand}" CommandParameter="-1" />
+                                        <Label Text="{Binding Volume}" FontSize="18" FontAttributes="Bold" VerticalOptions="Center" />
+                                        <Button Text="+" Style="{StaticResource SecondaryButton}" WidthRequest="40" Command="{Binding AdjustVolumeCommand}" CommandParameter="1" />
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+                            </Border>
+
+                            <Border Grid.Column="1" Style="{StaticResource CardBorder}" Padding="8">
+                                <VerticalStackLayout Spacing="8">
+                                    <Label Text="Channel" FontSize="12" HorizontalOptions="Center" TextColor="{StaticResource TextSecondary}" />
+                                    <HorizontalStackLayout Spacing="12" HorizontalOptions="Center">
+                                        <Button Text="CH-" Style="{StaticResource SecondaryButton}" WidthRequest="48" Command="{Binding AdjustChannelCommand}" CommandParameter="-1" />
+                                        <Label Text="{Binding Channel}" FontSize="18" FontAttributes="Bold" VerticalOptions="Center" />
+                                        <Button Text="CH+" Style="{StaticResource SecondaryButton}" WidthRequest="48" Command="{Binding AdjustChannelCommand}" CommandParameter="1" />
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+                            </Border>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- ================= SENSORS & TELEMETRY ================= -->
+                <Border Style="{StaticResource CardBorder}" Padding="16">
+                    <VerticalStackLayout Spacing="12">
+                        <Label Text="Sensor Telemetry (Simulated Data)" Style="{StaticResource SectionHeading}" />
+                        <Grid ColumnDefinitions="*, *, *" ColumnSpacing="10">
+                            <Border Grid.Column="0" Style="{StaticResource CardBorder}" Padding="8">
+                                <VerticalStackLayout Spacing="4">
+                                    <Label Text="Temp" FontSize="11" TextColor="{StaticResource TextSecondary}" HorizontalOptions="Center" />
+                                    <Label Text="{Binding SensorTemp}" FontSize="15" FontAttributes="Bold" HorizontalOptions="Center" />
+                                </VerticalStackLayout>
+                            </Border>
+
+                            <Border Grid.Column="1" Style="{StaticResource CardBorder}" Padding="8">
+                                <VerticalStackLayout Spacing="4">
+                                    <Label Text="Humidity" FontSize="11" TextColor="{StaticResource TextSecondary}" HorizontalOptions="Center" />
+                                    <Label Text="{Binding SensorHumidity}" FontSize="15" FontAttributes="Bold" HorizontalOptions="Center" />
+                                </VerticalStackLayout>
+                            </Border>
+
+                            <Border Grid.Column="2" Style="{StaticResource CardBorder}" Padding="8">
+                                <VerticalStackLayout Spacing="4">
+                                    <Label Text="Motion" FontSize="11" TextColor="{StaticResource TextSecondary}" HorizontalOptions="Center" />
+                                    <Label Text="{Binding SensorMotion}" FontSize="10" FontAttributes="Bold" HorizontalOptions="Center" />
+                                </VerticalStackLayout>
+                            </Border>
+                        </Grid>
+                        <Button Text="Refresh Sensor Data" Style="{StaticResource SecondaryButton}" Command="{Binding RefreshSensorCommand}" />
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Bottom Feedback Pill & History Quick Link -->
+        <Grid Grid.Row="2" ColumnDefinitions="*, Auto" Margin="0, 10, 0, 0">
+            <Label 
+                Text="{Binding LastFeedback}" 
+                FontSize="13" 
+                TextColor="{StaticResource AccentBlue}"
+                VerticalOptions="Center" />
+
+            <Border 
+                Grid.Column="1"
+                HeightRequest="36"
+                Padding="12, 0"
+                StrokeShape="RoundRectangle 18"
+                BackgroundColor="{StaticResource CardGrey}"
+                Stroke="{StaticResource BorderGrey}">
+                <Label 
+                    Text="Activity Log ›" 
+                    FontSize="12" 
+                    TextColor="{StaticResource TextSecondary}" 
+                    VerticalOptions="Center" />
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding OpenHistoryCommand}" />
+                </Border.GestureRecognizers>
+            </Border>
+        </Grid>
+    </Grid>
+
+</ContentPage>

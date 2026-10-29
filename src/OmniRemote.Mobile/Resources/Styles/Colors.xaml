@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="OmniRemote.Mobile.Resources.Styles.Colors">
+
+    <Color x:Key="PureBlack">#000000</Color>
+    <Color x:Key="CardGrey">#181818</Color>
+    <Color x:Key="TileGrey">#1C1C1E</Color>
+    <Color x:Key="TileGreyHover">#2C2C2E</Color>
+    <Color x:Key="BorderGrey">#2C2C2E</Color>
+    <Color x:Key="DividerGrey">#222224</Color>
+    <Color x:Key="TextPrimary">#FFFFFF</Color>
+    <Color x:Key="TextSecondary">#8E8E93</Color>
+    <Color x:Key="TextMuted">#636366</Color>
+    <Color x:Key="AccentBlue">#0A84FF</Color>
+    <Color x:Key="AccentGreen">#30D158</Color>
+    <Color x:Key="AccentRed">#FF453A</Color>
+    <Color x:Key="AccentOrange">#FF9F0A</Color>
+
+    <SolidColorBrush x:Key="PureBlackBrush" Color="{StaticResource PureBlack}" />
+    <SolidColorBrush x:Key="CardGreyBrush" Color="{StaticResource CardGrey}" />
+    <SolidColorBrush x:Key="TileGreyBrush" Color="{StaticResource TileGrey}" />
+    <SolidColorBrush x:Key="BorderGreyBrush" Color="{StaticResource BorderGrey}" />
+    <SolidColorBrush x:Key="TextPrimaryBrush" Color="{StaticResource TextPrimary}" />
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="{StaticResource TextSecondary}" />
+    <SolidColorBrush x:Key="AccentBlueBrush" Color="{StaticResource AccentBlue}" />
+
+</ResourceDictionary>

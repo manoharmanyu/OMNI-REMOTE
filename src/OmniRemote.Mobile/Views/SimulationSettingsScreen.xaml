@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<?xaml-comp compile="true" ?>
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:OmniRemote.Mobile.ViewModels"
+    xmlns:sim="clr-namespace:OmniRemote.Core.Simulation;assembly=OmniRemote.Core"
+    x:Class="OmniRemote.Mobile.Views.SimulationSettingsScreen"
+    x:DataType="vm:SimulationSettingsViewModel"
+    Shell.NavBarIsVisible="False"
+    BackgroundColor="{StaticResource PureBlack}">
+
+    <Grid RowDefinitions="Auto, *, Auto" Margin="20, 44, 20, 20">
+        <!-- Header -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto, *" Margin="0, 0, 0, 16">
+            <Border 
+                HeightRequest="40" 
+                WidthRequest="40" 
+                StrokeShape="RoundRectangle 20"
+                BackgroundColor="Transparent"
+                Stroke="Transparent">
+                <Label 
+                    Text="❮" 
+                    FontSize="20" 
+                    TextColor="{StaticResource TextPrimary}"
+                    HorizontalOptions="Center" 
+                    VerticalOptions="Center" />
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackCommand}" />
+                </Border.GestureRecognizers>
+            </Border>
+
+            <Label 
+                Grid.Column="1"
+                Text="Simulation Settings" 
+                FontSize="20" 
+                FontAttributes="Bold"
+                VerticalOptions="Center" 
+                Margin="8, 0, 0, 0" />
+        </Grid>
+
+        <!-- Configuration Settings -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Spacing="20">
+                <Border Style="{StaticResource CardBorder}" Padding="16">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="Scenario" Style="{StaticResource SectionHeading}" />
+                        <Picker 
+                            ItemsSource="{Binding Scenarios}" 
+                            SelectedItem="{Binding Scenario}" 
+                            TextColor="{StaticResource TextPrimary}" 
+                            BackgroundColor="{StaticResource TileGrey}" />
+                        <Label Text="{Binding EffectiveDescription}" Style="{StaticResource SubHeading}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Custom Parameters -->
+                <Border Style="{StaticResource CardBorder}" Padding="16">
+                    <VerticalStackLayout Spacing="14">
+                        <Label Text="Custom Latency &amp; Failure Rates" Style="{StaticResource SectionHeading}" />
+
+                        <VerticalStackLayout Spacing="4">
+                            <Grid ColumnDefinitions="*, Auto">
+                                <Label Text="Latency" FontSize="13" TextColor="{StaticResource TextSecondary}" />
+                                <Label Grid.Column="1" Text="{Binding LatencyMs, StringFormat='{}{0} ms'}" FontSize="13" FontAttributes="Bold" />
+                            </Grid>
+                            <Slider Minimum="0" Maximum="3000" Value="{Binding LatencyMs}" MinimumTrackColor="{StaticResource AccentBlue}" />
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="4">
+                            <Grid ColumnDefinitions="*, Auto">
+                                <Label Text="Failure Rate" FontSize="13" TextColor="{StaticResource TextSecondary}" />
+                                <Label Grid.Column="1" Text="{Binding FailurePercent, StringFormat='{}{0} %'}" FontSize="13" FontAttributes="Bold" />
+                            </Grid>
+                            <Slider Minimum="0" Maximum="100" Value="{Binding FailurePercent}" MinimumTrackColor="{StaticResource AccentRed}" />
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="4">
+                            <Grid ColumnDefinitions="*, Auto">
+                                <Label Text="Timeout Rate" FontSize="13" TextColor="{StaticResource TextSecondary}" />
+                                <Label Grid.Column="1" Text="{Binding TimeoutPercent, StringFormat='{}{0} %'}" FontSize="13" FontAttributes="Bold" />
+                            </Grid>
+                            <Slider Minimum="0" Maximum="100" Value="{Binding TimeoutPercent}" MinimumTrackColor="{StaticResource AccentOrange}" />
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Label Text="{Binding StatusMessage}" TextColor="{StaticResource AccentGreen}" HorizontalOptions="Center" />
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Save Button -->
+        <Button 
+            Grid.Row="2"
+            Text="Save Settings" 
+            Style="{StaticResource PrimaryButton}"
+            Command="{Binding SaveCommand}" />
+    </Grid>
+
+</ContentPage>

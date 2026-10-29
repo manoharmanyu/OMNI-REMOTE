@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/OmniRemote.Backend/OmniRemote.Backend.csproj" />
+    <Project Path="src/OmniRemote.Core/OmniRemote.Core.csproj" />
+    <Project Path="src/OmniRemote.Domain/OmniRemote.Domain.csproj" />
+    <Project Path="src/OmniRemote.Infrastructure/OmniRemote.Infrastructure.csproj" />
+    <Project Path="src/OmniRemote.Integrations.Bluetooth/OmniRemote.Integrations.Bluetooth.csproj" />
+    <Project Path="src/OmniRemote.Integrations.Infrared/OmniRemote.Integrations.Infrared.csproj" />
+    <Project Path="src/OmniRemote.Integrations.Network/OmniRemote.Integrations.Network.csproj" />
+    <Project Path="src/OmniRemote.Integrations.SmartHomeHub/OmniRemote.Integrations.SmartHomeHub.csproj" />
+    <Project Path="src/OmniRemote.Mobile/OmniRemote.Mobile.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/OmniRemote.IntegrationTests/OmniRemote.IntegrationTests.csproj" />
+    <Project Path="tests/OmniRemote.UnitTests/OmniRemote.UnitTests.csproj" />
+  </Folder>
+</Solution>

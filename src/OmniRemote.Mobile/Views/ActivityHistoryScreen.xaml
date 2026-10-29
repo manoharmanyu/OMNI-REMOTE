@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<?xaml-comp compile="true" ?>
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:OmniRemote.Mobile.ViewModels"
+    xmlns:devices="clr-namespace:OmniRemote.Domain.Devices;assembly=OmniRemote.Domain"
+    x:Class="OmniRemote.Mobile.Views.ActivityHistoryScreen"
+    x:DataType="vm:ActivityHistoryViewModel"
+    Shell.NavBarIsVisible="False"
+    BackgroundColor="{StaticResource PureBlack}">
+
+    <Grid RowDefinitions="Auto, *, Auto" Margin="20, 44, 20, 20">
+        <!-- Header -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto, *, Auto" Margin="0, 0, 0, 16">
+            <Border 
+                HeightRequest="40" 
+                WidthRequest="40" 
+                StrokeShape="RoundRectangle 20"
+                BackgroundColor="Transparent"
+                Stroke="Transparent">
+                <Label 
+                    Text="❮" 
+                    FontSize="20" 
+                    TextColor="{StaticResource TextPrimary}"
+                    HorizontalOptions="Center" 
+                    VerticalOptions="Center" />
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackCommand}" />
+                </Border.GestureRecognizers>
+            </Border>
+
+            <Label 
+                Grid.Column="1"
+                Text="Activity History" 
+                FontSize="20" 
+                FontAttributes="Bold"
+                VerticalOptions="Center" 
+                Margin="8, 0, 0, 0" />
+
+            <Button 
+                Grid.Column="2"
+                Text="Clear"
+                Style="{StaticResource SecondaryButton}"
+                HeightRequest="36"
+                FontSize="12"
+                Command="{Binding ClearHistoryCommand}" />
+        </Grid>
+
+        <!-- Entries List -->
+        <CollectionView Grid.Row="1" ItemsSource="{Binding Entries}" SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="devices:ActivityEntry">
+                    <Border Style="{StaticResource CardBorder}" Margin="0, 0, 0, 10" Padding="12">
+                        <Grid ColumnDefinitions="*, Auto">
+                            <VerticalStackLayout Spacing="3">
+                                <Label Text="{Binding CommandName}" FontSize="15" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}" />
+                                <Label Text="{Binding DeviceName}" Style="{StaticResource SubHeading}" FontSize="12" />
+                                <Label Text="{Binding Parameters}" FontSize="11" TextColor="{StaticResource TextMuted}" IsVisible="{Binding HasParameters}" />
+                                <Label Text="{Binding FormattedTime}" FontSize="10" TextColor="{StaticResource TextMuted}" />
+                            </VerticalStackLayout>
+                            <Border Grid.Column="1" HeightRequest="24" Padding="6, 2" StrokeShape="RoundRectangle 6" BackgroundColor="{StaticResource PureBlack}" Stroke="{StaticResource BorderGrey}" VerticalOptions="Center">
+                                <Label Text="{Binding Status}" FontSize="10" TextColor="{StaticResource AccentBlue}" FontAttributes="Bold" />
+                            </Border>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+
+</ContentPage>

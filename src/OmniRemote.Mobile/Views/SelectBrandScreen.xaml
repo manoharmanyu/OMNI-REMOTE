@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<?xaml-comp compile="true" ?>
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:OmniRemote.Mobile.ViewModels"
+    xmlns:catalog="clr-namespace:OmniRemote.Core.Catalog;assembly=OmniRemote.Core"
+    x:Class="OmniRemote.Mobile.Views.SelectBrandScreen"
+    x:DataType="vm:SelectBrandViewModel"
+    Shell.NavBarIsVisible="False"
+    BackgroundColor="{StaticResource PureBlack}">
+
+    <Grid RowDefinitions="Auto, Auto, *" Margin="16, 44, 4, 16">
+        <!-- Top Search Bar (Screen 4 from Reference Screenshot) -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto, *" Margin="0, 0, 12, 14">
+            <Border 
+                HeightRequest="42" 
+                WidthRequest="42" 
+                StrokeShape="RoundRectangle 21"
+                BackgroundColor="Transparent"
+                Stroke="Transparent">
+                <Label 
+                    Text="❮" 
+                    FontSize="20" 
+                    TextColor="{StaticResource TextPrimary}"
+                    HorizontalOptions="Center" 
+                    VerticalOptions="Center" />
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackCommand}" />
+                </Border.GestureRecognizers>
+            </Border>
+
+            <Border 
+                Grid.Column="1"
+                HeightRequest="44"
+                StrokeShape="RoundRectangle 22"
+                BackgroundColor="{StaticResource CardGrey}"
+                Stroke="{StaticResource BorderGrey}"
+                Padding="12, 0"
+                Margin="6, 0, 0, 0">
+                <Grid ColumnDefinitions="Auto, *">
+                    <Label 
+                        Text="🔍" 
+                        FontSize="14" 
+                        VerticalOptions="Center" 
+                        Margin="0, 0, 8, 0" />
+                    <Entry 
+                        Grid.Column="1"
+                        Text="{Binding SearchQuery}"
+                        Placeholder="{Binding SearchPlaceholder}"
+                        BackgroundColor="Transparent"
+                        VerticalOptions="Center" />
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- Top Brands Section -->
+        <VerticalStackLayout 
+            Grid.Row="1" 
+            IsVisible="{Binding HasTopBrands}" 
+            Margin="6, 0, 12, 12">
+            <Label 
+                Text="Top brands" 
+                Style="{StaticResource SectionHeading}" 
+                Margin="0, 0, 0, 8" />
+            <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+                <HorizontalStackLayout Spacing="8">
+                    <BindableLayout.ItemsSource>
+                        <Binding Path="TopBrands" />
+                    </BindableLayout.ItemsSource>
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="catalog:Brand">
+                            <Border 
+                                StrokeShape="RoundRectangle 18"
+                                BackgroundColor="{StaticResource TileGrey}"
+                                Stroke="{StaticResource BorderGrey}"
+                                Padding="14, 8">
+                                <Label 
+                                    Text="{Binding Name}" 
+                                    FontSize="13" 
+                                    TextColor="{StaticResource TextPrimary}" />
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer 
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:SelectBrandViewModel}}, Path=SelectBrandCommand}" 
+                                        CommandParameter="{Binding .}" />
+                                </Border.GestureRecognizers>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </HorizontalStackLayout>
+            </ScrollView>
+        </VerticalStackLayout>
+
+        <!-- Brand List with Side Alphabet Index -->
+        <Grid Grid.Row="2" ColumnDefinitions="*, 28">
+            <!-- Scrollable Brand Sections -->
+            <CollectionView 
+                ItemsSource="{Binding BrandSections}"
+                SelectionMode="None"
+                Margin="0, 0, 6, 0">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="catalog:BrandSection">
+                        <VerticalStackLayout Spacing="0">
+                            <!-- Section Header -->
+                            <Label 
+                                Text="{Binding Key}" 
+                                FontSize="13" 
+                                FontAttributes="Bold"
+                                TextColor="{StaticResource AccentBlue}"
+                                Margin="8, 12, 0, 6" />
+
+                            <!-- Brands in Section -->
+                            <VerticalStackLayout>
+                                <BindableLayout.ItemsSource>
+                                    <Binding Path="Brands" />
+                                </BindableLayout.ItemsSource>
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="catalog:Brand">
+                                        <VerticalStackLayout>
+                                            <Grid ColumnDefinitions="*, Auto" Padding="8, 12">
+                                                <VerticalStackLayout VerticalOptions="Center" Spacing="2">
+                                                    <Label 
+                                                        Text="{Binding Name}" 
+                                                        FontSize="16" 
+                                                        TextColor="{StaticResource TextPrimary}" />
+                                                    <Label 
+                                                        Text="{Binding Secondary}" 
+                                                        FontSize="12" 
+                                                        TextColor="{StaticResource TextSecondary}"
+                                                        IsVisible="{Binding HasSecondary}" />
+                                                </VerticalStackLayout>
+                                                <Label 
+                                                    Grid.Column="1" 
+                                                    Text="›" 
+                                                    FontSize="18" 
+                                                    TextColor="{StaticResource TextMuted}" 
+                                                    VerticalOptions="Center" />
+                                            </Grid>
+                                            <BoxView HeightRequest="1" Color="{StaticResource DividerGrey}" />
+                                            <VerticalStackLayout.GestureRecognizers>
+                                                <TapGestureRecognizer 
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:SelectBrandViewModel}}, Path=SelectBrandCommand}" 
+                                                    CommandParameter="{Binding .}" />
+                                            </VerticalStackLayout.GestureRecognizers>
+                                        </VerticalStackLayout>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- A-Z Alphabet Index Column -->
+            <ScrollView 
+                Grid.Column="1" 
+                VerticalScrollBarVisibility="Never" 
+                VerticalOptions="Center">
+                <VerticalStackLayout Spacing="2" HorizontalOptions="Center">
+                    <BindableLayout.ItemsSource>
+                        <Binding Path="IndexKeys" />
+                    </BindableLayout.ItemsSource>
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="x:String">
+                            <Label 
+                                Text="{Binding .}" 
+                                FontSize="11" 
+                                TextColor="{StaticResource TextSecondary}"
+                                HorizontalOptions="Center"
+                                Padding="2">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer 
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:SelectBrandViewModel}}, Path=SelectIndexCommand}" 
+                                        CommandParameter="{Binding .}" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+            </ScrollView>
+        </Grid>
+    </Grid>
+
+</ContentPage>

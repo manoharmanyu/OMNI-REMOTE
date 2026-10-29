@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<?xaml-comp compile="true" ?>
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:OmniRemote.Mobile.ViewModels"
+    xmlns:devices="clr-namespace:OmniRemote.Domain.Devices;assembly=OmniRemote.Domain"
+    x:Class="OmniRemote.Mobile.Views.ConfigureRemoteScreen"
+    x:DataType="vm:ConfigureRemoteViewModel"
+    Shell.NavBarIsVisible="False"
+    BackgroundColor="{StaticResource PureBlack}">
+
+    <Grid RowDefinitions="Auto, *, Auto" Margin="20, 44, 20, 20">
+        <!-- Header -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto, *" Margin="0, 0, 0, 20">
+            <Border 
+                HeightRequest="40" 
+                WidthRequest="40" 
+                StrokeShape="RoundRectangle 20"
+                BackgroundColor="Transparent"
+                Stroke="Transparent">
+                <Label 
+                    Text="❮" 
+                    FontSize="20" 
+                    TextColor="{StaticResource TextPrimary}"
+                    HorizontalOptions="Center" 
+                    VerticalOptions="Center" />
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackCommand}" />
+                </Border.GestureRecognizers>
+            </Border>
+
+            <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Margin="8, 0, 0, 0">
+                <Label 
+                    Text="{Binding CategoryName}" 
+                    FontSize="20" 
+                    FontAttributes="Bold" />
+                <Label 
+                    Text="{Binding BrandName}" 
+                    Style="{StaticResource SubHeading}" />
+            </VerticalStackLayout>
+        </Grid>
+
+        <!-- Main Form (Screen 5 from Reference Screenshot) -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Spacing="20">
+                <!-- Top Bluetooth / Simulation Visual -->
+                <Border 
+                    HeightRequest="76"
+                    WidthRequest="76"
+                    StrokeShape="RoundRectangle 38"
+                    BackgroundColor="{StaticResource CardGrey}"
+                    Stroke="{StaticResource BorderGrey}"
+                    HorizontalOptions="Center">
+                    <Label 
+                        Text="ᛒ" 
+                        FontSize="36" 
+                        TextColor="{StaticResource AccentBlue}"
+                        HorizontalOptions="Center" 
+                        VerticalOptions="Center" />
+                </Border>
+
+                <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
+                    <Label 
+                        Text="Configure Device" 
+                        FontSize="18" 
+                        FontAttributes="Bold" 
+                        HorizontalTextAlignment="Center" />
+                    <Label 
+                        Text="Select connection mode and assign a friendly name" 
+                        Style="{StaticResource SubHeading}" 
+                        HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+
+                <!-- Remote Friendly Name -->
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Friendly Name" Style="{StaticResource SectionHeading}" />
+                    <Border Style="{StaticResource CardBorder}" Padding="12, 0">
+                        <Entry 
+                            Text="{Binding DeviceName}" 
+                            Placeholder="e.g. Living Room AC"
+                            BackgroundColor="Transparent" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <!-- Room Selection -->
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Room Location" Style="{StaticResource SectionHeading}" />
+                    <Border Style="{StaticResource CardBorder}" Padding="12, 0">
+                        <Picker 
+                            ItemsSource="{Binding Rooms}"
+                            SelectedItem="{Binding SelectedRoom}"
+                            TextColor="{StaticResource TextPrimary}"
+                            Title="Select Room"
+                            BackgroundColor="Transparent" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <!-- Connection Options -->
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Connection Mode" Style="{StaticResource SectionHeading}" />
+                    <Border Style="{StaticResource CardBorder}" Padding="12, 0">
+                        <Picker 
+                            ItemsSource="{Binding ConnectionOptions}"
+                            SelectedItem="{Binding SelectedConnection}"
+                            TextColor="{StaticResource TextPrimary}"
+                            BackgroundColor="Transparent" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <!-- Status / Explanation Note -->
+                <Border 
+                    StrokeShape="RoundRectangle 12"
+                    BackgroundColor="{StaticResource TileGrey}"
+                    Stroke="{StaticResource BorderGrey}"
+                    Padding="14, 12">
+                    <Grid ColumnDefinitions="Auto, *">
+                        <Label Text="ℹ" FontSize="16" TextColor="{StaticResource AccentBlue}" Margin="0, 0, 10, 0" />
+                        <Label 
+                            Grid.Column="1"
+                            Text="{Binding StatusNote}" 
+                            FontSize="12" 
+                            TextColor="{StaticResource TextSecondary}"
+                            LineBreakMode="WordWrap" />
+                    </Grid>
+                </Border>
+
+                <!-- Error Message if any -->
+                <Label 
+                    Text="{Binding ErrorMessage}" 
+                    TextColor="{StaticResource AccentRed}" 
+                    FontSize="13" 
+                    HorizontalOptions="Center"
+                    IsVisible="{Binding HasErrorMessage}" />
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Save Button -->
+        <Button 
+            Grid.Row="2"
+            Text="Save Remote" 
+            Style="{StaticResource PrimaryButton}"
+            Command="{Binding SaveCommand}"
+            Margin="0, 12, 0, 0" />
+    </Grid>
+
+</ContentPage>

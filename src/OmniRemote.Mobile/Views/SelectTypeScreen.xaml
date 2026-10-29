@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<?xaml-comp compile="true" ?>
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:OmniRemote.Mobile.ViewModels"
+    x:Class="OmniRemote.Mobile.Views.SelectTypeScreen"
+    x:DataType="vm:SelectTypeViewModel"
+    Shell.NavBarIsVisible="False"
+    BackgroundColor="{StaticResource PureBlack}">
+
+    <Grid RowDefinitions="Auto, *" Margin="16, 44, 16, 16">
+        <!-- Header with Back Button -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto, *" Margin="0, 0, 0, 18">
+            <Border 
+                HeightRequest="40" 
+                WidthRequest="40" 
+                StrokeShape="RoundRectangle 20"
+                BackgroundColor="Transparent"
+                Stroke="Transparent">
+                <Label 
+                    Text="❮" 
+                    FontSize="20" 
+                    TextColor="{StaticResource TextPrimary}"
+                    HorizontalOptions="Center" 
+                    VerticalOptions="Center" />
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackCommand}" />
+                </Border.GestureRecognizers>
+            </Border>
+
+            <Label 
+                Grid.Column="1"
+                Text="Select type" 
+                FontSize="22" 
+                FontAttributes="Bold"
+                VerticalOptions="Center" 
+                Margin="6, 0, 0, 0" />
+        </Grid>
+
+        <!-- 3-Column Grid of Device Tiles (Screen 3 from Reference Screenshot) -->
+        <ScrollView Grid.Row="1">
+            <CollectionView 
+                ItemsSource="{Binding Categories}"
+                SelectionMode="None">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout 
+                        Orientation="Vertical" 
+                        Span="3" 
+                        HorizontalItemSpacing="10" 
+                        VerticalItemSpacing="12" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="vm:DeviceTypeOption">
+                        <Border 
+                            HeightRequest="110"
+                            StrokeShape="RoundRectangle 16"
+                            BackgroundColor="{StaticResource TileGrey}"
+                            Stroke="{StaticResource BorderGrey}">
+                            <VerticalStackLayout 
+                                VerticalOptions="Center" 
+                                HorizontalOptions="Center" 
+                                Spacing="8" 
+                                Padding="6">
+                                <Label 
+                                    Text="{Binding IconSymbol}" 
+                                    FontSize="28" 
+                                    HorizontalOptions="Center" />
+                                <Label 
+                                    Text="{Binding DisplayName}" 
+                                    FontSize="12" 
+                                    TextColor="{StaticResource TextPrimary}"
+                                    HorizontalTextAlignment="Center"
+                                    LineBreakMode="WordWrap"
+                                    MaxLines="2" />
+                            </VerticalStackLayout>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer 
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:SelectTypeViewModel}}, Path=SelectCategoryCommand}" 
+                                    CommandParameter="{Binding .}" />
+                            </Border.GestureRecognizers>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </ScrollView>
+    </Grid>
+
+</ContentPage>

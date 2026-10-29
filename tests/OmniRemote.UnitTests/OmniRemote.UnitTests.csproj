@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>OmniRemote.UnitTests</RootNamespace>
+    <IsPackable>false</IsPackable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\OmniRemote.Domain\OmniRemote.Domain.csproj" />
+    <ProjectReference Include="..\..\src\OmniRemote.Core\OmniRemote.Core.csproj" />
+    <ProjectReference Include="..\..\src\OmniRemote.Infrastructure\OmniRemote.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\OmniRemote.Integrations.Bluetooth\OmniRemote.Integrations.Bluetooth.csproj" />
+    <ProjectReference Include="..\..\src\OmniRemote.Integrations.Network\OmniRemote.Integrations.Network.csproj" />
+    <ProjectReference Include="..\..\src\OmniRemote.Integrations.Infrared\OmniRemote.Integrations.Infrared.csproj" />
+    <ProjectReference Include="..\..\src\OmniRemote.Integrations.SmartHomeHub\OmniRemote.Integrations.SmartHomeHub.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+</Project>
