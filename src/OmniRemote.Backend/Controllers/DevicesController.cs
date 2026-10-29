@@ -37,10 +37,9 @@ public sealed class DevicesController : ControllerBase
         var userId = GetCurrentUserId();
         var devices = await _db.Devices
             .Where(d => d.UserId == userId)
-            .OrderByDescending(d => d.CreatedAt)
             .ToListAsync(ct);
 
-        return Ok(devices);
+        return Ok(devices.OrderByDescending(d => d.CreatedAt));
     }
 
     [HttpGet("{id:guid}")]

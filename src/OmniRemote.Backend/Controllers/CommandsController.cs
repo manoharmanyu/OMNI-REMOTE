@@ -20,12 +20,14 @@ public sealed class CommandsController : ControllerBase
 {
     private readonly OmniRemoteDbContext _db;
     private readonly CommandRouter _router;
+    private readonly DeviceRegistry _registry;
     private readonly ILogger<CommandsController> _logger;
 
-    public CommandsController(OmniRemoteDbContext db, CommandRouter router, ILogger<CommandsController> logger)
+    public CommandsController(OmniRemoteDbContext db, CommandRouter router, DeviceRegistry registry, ILogger<CommandsController> logger)
     {
         _db = db;
         _router = router;
+        _registry = registry;
         _logger = logger;
     }
 
@@ -96,7 +98,12 @@ public sealed class CommandsController : ControllerBase
             });
         }
 
-        // 3. Route through CommandRouter
+        // 3. Ensure device is registered in memory and route through CommandRouter
+        if (_registry.Find(domainDevice.Id) is null)
+        {
+            await _registry.AddAsync(domainDevice, ct);
+        }
+
         var outcome = await _router.SendAsync(command, ct);
 
         // 4. Update Database Log
@@ -142,11 +149,9 @@ public sealed class CommandsController : ControllerBase
 
         var activities = await _db.Activities
             .Where(a => a.DeviceId == deviceId && a.UserId == userId)
-            .OrderByDescending(a => a.Timestamp)
-            .Take(50)
             .ToListAsync(ct);
 
-        return Ok(activities);
+        return Ok(activities.OrderByDescending(a => a.Timestamp).Take(50));
     }
 }
 

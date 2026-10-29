@@ -6,7 +6,7 @@ namespace OmniRemote.Domain.Devices;
 /// </summary>
 public sealed record DeviceProfile
 {
-    public required IReadOnlySet<Capability> Capabilities { get; init; }
+    public HashSet<Capability> Capabilities { get; init; } = [];
     public int MinTemperatureC { get; init; }
     public int MaxTemperatureC { get; init; }
     public IReadOnlyList<string> Modes { get; init; } = [];
