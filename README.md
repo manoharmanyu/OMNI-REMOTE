@@ -315,6 +315,25 @@ dotnet --list-sdks
 
 ## Getting Started
 
+### 📱 Option 1: Run in Expo Go on your Phone (Recommended)
+
+Just like QRShield, OmniRemote can be launched instantly on your physical iPhone or Android device via **Expo Go** without requiring Xcode, Android Studio, or USB debugging:
+
+```bash
+# 1. From the project root, start the Expo development server:
+npm run mobile
+# or
+cd apps/mobile && npx expo start
+```
+
+1. Install **Expo Go** from the iOS App Store or Google Play Store.
+2. Scan the QR code displayed in your terminal with your phone camera (iOS) or inside the Expo Go app (Android).
+3. The full OmniRemote dark-theme UI will launch immediately on your device!
+
+---
+
+### 💻 Option 2: Run the ASP.NET Core Backend & CLI Demo
+
 ### 1. Clone the Repository
 
 Replace the repository URL below with the actual repository URL if needed.
