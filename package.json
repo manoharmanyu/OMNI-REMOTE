@@ -1,0 +1,13 @@
+{
+  "name": "omniremote",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "npm --prefix apps/mobile start",
+    "mobile": "npm --prefix apps/mobile start",
+    "mobile:android": "npm --prefix apps/mobile run android",
+    "mobile:ios": "npm --prefix apps/mobile run ios",
+    "mobile:web": "npm --prefix apps/mobile run web",
+    "demo": "python3 scripts/demo_simulation.py"
+  }
+}
