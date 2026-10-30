@@ -27,17 +27,6 @@ export const ConfigureRemoteScreen: React.FC<{ route: any; navigation: any }> = 
   const [selectedRoom, setSelectedRoom] = useState('Living Room');
   const [modelName, setModelName] = useState('Series-Smart');
   const [connectionKind, setConnectionKind] = useState<'Simulation' | 'Bluetooth'>('Simulation');
-  const [isScanning, setIsScanning] = useState(false);
-  const [scannedFound, setScannedFound] = useState(false);
-
-  const handleScan = () => {
-    setIsScanning(true);
-    setScannedFound(false);
-    setTimeout(() => {
-      setIsScanning(false);
-      setScannedFound(true);
-    }, 1000);
-  };
 
   const handleSave = async () => {
     if (!friendlyName.trim()) return;
@@ -53,7 +42,6 @@ export const ConfigureRemoteScreen: React.FC<{ route: any; navigation: any }> = 
     });
 
     setActiveDevice(newDev);
-    // Reset back to Home or straight to RemoteControl
     navigation.reset({
       index: 1,
       routes: [{ name: 'Home' }, { name: 'RemoteControl', params: { deviceId: newDev.id } }],
@@ -78,30 +66,15 @@ export const ConfigureRemoteScreen: React.FC<{ route: any; navigation: any }> = 
       </View>
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        {/* Bluetooth Pairing / Scanning Card */}
+        {/* Genuine Status Card */}
         <View style={styles.scanCard}>
           <View style={styles.bluetoothIconCircle}>
-            <Bluetooth size={40} color="#FFFFFF" strokeWidth={2.2} />
+            <Sparkles size={36} color={Colors.primary} strokeWidth={2.2} />
           </View>
-          <Text style={styles.scanTitle}>Connect Device</Text>
+          <Text style={styles.scanTitle}>Hardware-Free Engine</Text>
           <Text style={styles.scanSubtitle}>
-            Pair via Bluetooth or control instantly via Hardware-Free Simulation.
+            Full virtual device simulation. Commands, dial controls, and states operate locally with zero external hardware required.
           </Text>
-
-          <TouchableOpacity
-            style={[styles.scanButton, isScanning && styles.scanButtonActive]}
-            onPress={handleScan}
-            disabled={isScanning}
-            activeOpacity={0.8}
-          >
-            {isScanning ? (
-              <ActivityIndicator color="#FFFFFF" />
-            ) : (
-              <Text style={styles.scanButtonText}>
-                {scannedFound ? '✓ Discovered Virtual Peripherals' : 'Scan for Devices'}
-              </Text>
-            )}
-          </TouchableOpacity>
         </View>
 
         {/* Connection Mode Selection */}
@@ -119,11 +92,11 @@ export const ConfigureRemoteScreen: React.FC<{ route: any; navigation: any }> = 
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
                 <Text style={styles.modeTitle}>Simulation Mode</Text>
                 <View style={styles.recBadge}>
-                  <Text style={styles.recBadgeText}>DEFAULT</Text>
+                  <Text style={styles.recBadgeText}>ACTIVE</Text>
                 </View>
               </View>
               <Text style={styles.modeDesc}>
-                100% hardware-free, virtual device engine. No physical AC, TV, or BLE needed.
+                Pure simulation. Validates all inputs and logs commands without pretending physical hardware exists.
               </Text>
             </View>
           </View>
@@ -140,9 +113,9 @@ export const ConfigureRemoteScreen: React.FC<{ route: any; navigation: any }> = 
               <Bluetooth size={22} color="#FFFFFF" />
             </View>
             <View style={{ flex: 1 }}>
-              <Text style={styles.modeTitle}>Bluetooth LE (ORDP/1)</Text>
+              <Text style={styles.modeTitle}>Physical Bluetooth LE</Text>
               <Text style={styles.modeDesc}>
-                Authenticate via HMAC-SHA256 authenticated framing with physical peripheral.
+                Requires supported physical hardware gateway and native BLE compilation permissions.
               </Text>
             </View>
           </View>

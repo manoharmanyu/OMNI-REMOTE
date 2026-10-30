@@ -315,7 +315,9 @@ export const RemoteControlScreen: React.FC<{ route: any; navigation: any }> = ({
                 <Sparkles size={16} color={Colors.primary} />
                 <Text style={styles.telemetryTitle}>SIMULATED DATA</Text>
                 <View style={styles.statusPill}>
-                  <Text style={styles.statusPillText}>CONNECTED</Text>
+                  <Text style={styles.statusPillText}>
+                    {device.connectionKind === 'Simulation' ? 'SIMULATED' : 'CONNECTED'}
+                  </Text>
                 </View>
               </View>
 
@@ -335,8 +337,10 @@ export const RemoteControlScreen: React.FC<{ route: any; navigation: any }> = ({
                 </View>
                 <View style={styles.metricDivider} />
                 <View style={styles.metricItem}>
-                  <Text style={styles.metricLabel}>Protocol</Text>
-                  <Text style={styles.metricValue}>SIM / ORDP1</Text>
+                  <Text style={styles.metricLabel}>Engine</Text>
+                  <Text style={styles.metricValue}>
+                    {device.connectionKind === 'Simulation' ? 'SIMULATION' : 'ORDP1'}
+                  </Text>
                 </View>
               </View>
             </View>
